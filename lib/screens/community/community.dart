@@ -1,6 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:arceus_plan/screens/postDetails/postDetails.dart';
+
+import '../../data/post_data.dart';
+import '../../models/post_model.dart';
+import '../postDetails/post_card.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -12,65 +15,6 @@ class CommunityScreen extends StatefulWidget {
 class _CommunityScreenState extends State<CommunityScreen> {
   int _selectedTab = 0;
   final List<String> _tabs = ["Trending", "Following", "Events"];
-
-  final List<Post> trendingPosts = [
-    Post(
-      username: "Ann Korkowski",
-      handle: "@anniekork",
-      profileImage: "https://randomuser.me/api/portraits/women/44.jpg",
-      content: "Transform your living room into a cozy oasis! 😍",
-      imageUrl: "assets/images/living-room-1.jpg",
-      likes: "23.5k",
-      comments: "3.3k",
-      shares: "104k",
-    ),
-    Post(
-      username: "John Doe",
-      handle: "@johndoe",
-      profileImage: "https://randomuser.me/api/portraits/men/32.jpg",
-      content: "Excited to share my latest design! 🚀🔥",
-      imageUrl: "assets/images/khloe-arledge-8Rz_RIyp5FM-unsplash.jpg",
-      likes: "12.3k",
-      comments: "1.5k",
-      shares: "50k",
-    ),
-  ];
-
-  final List<Post> followingPosts = [
-    Post(
-      username: "Lisa Brown",
-      handle: "@lisab",
-      profileImage: "https://randomuser.me/api/portraits/women/55.jpg",
-      content: "Loved the latest UI/UX trends! Here’s my take. 💡",
-      imageUrl: "assets/images/khloe-arledge-8Rz_RIyp5FM-unsplash.jpg",
-      likes: "9.1k",
-      comments: "2.4k",
-      shares: "30k",
-    ),
-  ];
-
-  final List<Post> eventPosts = [
-    Post(
-      username: "TechCon",
-      handle: "@techcon2024",
-      profileImage: "https://randomuser.me/api/portraits/men/45.jpg",
-      content: "Join us for the biggest tech event of the year! 🚀",
-      imageUrl: "assets/images/andrea-davis-zOPRKaYLSdE-unsplash.jpg",
-      likes: "50k",
-      comments: "10k",
-      shares: "200k",
-    ),
-    Post(
-      username: "DesignCon",
-      handle: "@designcon",
-      profileImage: "https://randomuser.me/api/portraits/women/33.jpg",
-      content: "The biggest design conference is here! 🎨",
-      imageUrl: "assets/images/khloe-arledge-8Rz_RIyp5FM-unsplash.jpg",
-      likes: "35k",
-      comments: "7.2k",
-      shares: "120k",
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -179,105 +123,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
     );
   }
 
-}
-
-
-class Post {
-  final String username;
-  final String handle;
-  final String profileImage;
-  final String content;
-  final String imageUrl;
-  final String likes;
-  final String comments;
-  final String shares;
-
-  Post({
-    required this.username,
-    required this.handle,
-    required this.profileImage,
-    required this.content,
-    required this.imageUrl,
-    required this.likes,
-    required this.comments,
-    required this.shares,
-  });
-}
-
-class PostCard extends StatelessWidget {
-  final Post post;
-
-  const PostCard({super.key, required this.post});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PostDetailsScreen(),));
-      },
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 0,
-        color: Colors.white,
-        margin: const EdgeInsets.only(bottom: 16),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(width: 3, height: 140, color: Colors.pinkAccent, margin: const EdgeInsets.only(right: 12)),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(backgroundColor: Colors.orange, radius: 22, backgroundImage: NetworkImage(post.profileImage)),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(post.username, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                            Text(post.handle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Text(post.content, style: const TextStyle(fontSize: 14, color: Colors.black87)),
-                    const SizedBox(height: 12),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(post.imageUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildIconWithText(Icons.favorite, post.likes, Colors.red),
-                        _buildIconWithText(Icons.comment, post.comments, Colors.grey),
-                        _buildIconWithText(Icons.share, post.shares, Colors.grey),
-                        _buildIconWithText(Icons.bookmark_border, "", Colors.grey),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIconWithText(IconData icon, String text, Color color) {
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: color),
-        if (text.isNotEmpty) ...[const SizedBox(width: 4), Text(text, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500))],
-      ],
-    );
-  }
 }
 
 

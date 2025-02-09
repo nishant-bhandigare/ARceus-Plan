@@ -1,91 +1,61 @@
-import 'package:arceus_plan/screens/productDetails/productDetails.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import '../../data/product_data.dart';
+import '../productDetails/product_card.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200], // Adjust to match your design
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: CustomAppBar(),
+      backgroundColor: Colors.grey[200], // Adjust to match your design
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: CustomAppBar(),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text("Catalog", style: TextStyle(fontSize: 40),),
+            ),
+            const SizedBox(height: 10),
+            const CategoryList(),
+            const PromoBanner(),
+            const SizedBox(height: 10),
+            const SizedBox(height: 10),
+            _buildProductGrid(),
+            const SizedBox(height: 100),
+          ],
         ),
-        body: const SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text("Catalog", style: TextStyle(fontSize: 40),),
+      ),
+    );
+  }
+
+  Widget _buildProductGrid() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          for (int i = 0; i < products.length; i += 2)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: ProductCard(product: products[i])),
+                  const SizedBox(width: 15),
+                  if (i + 1 < products.length)
+                    Expanded(child: ProductCard(product: products[i + 1])),
+                  if (i + 1 >= products.length) const Spacer(), // Balance row if odd number of items
+                ],
               ),
-              SizedBox(height: 10),
-              CategoryList(),
-              PromoBanner(),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: ProductCard(
-                        imageUrl: 'assets/images/rot_chair.png', // Replace with actual asset or URL
-                        category: 'Chair',
-                        title: 'Rot chair',
-                        price: 109.99,
-                        rating: 4.5,
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    Expanded(
-                      child: ProductCard(
-                        imageUrl: 'assets/images/sofa_yellow.png', // Replace with actual asset or URL
-                        category: 'Sofa',
-                        title: 'Yellow Sofa',
-                        price: 109.99,
-                        rating: 4.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: ProductCard(
-                        imageUrl: 'assets/images/sofa_white.png', // Replace with actual asset or URL
-                        category: 'Sofa',
-                        title: 'Sofa White',
-                        price: 109.99,
-                        rating: 4.5,
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    Expanded(
-                      child: ProductCard(
-                        imageUrl: 'assets/images/bed_double.png', // Replace with actual asset or URL
-                        category: 'Bed',
-                        title: 'Double Bed',
-                        price: 109.99,
-                        rating: 4.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 100),
-            ],
-          ),
-        ),
-      );
+            ),
+        ],
+      ),
+    );
   }
 }
 
@@ -316,108 +286,6 @@ class PromoBanner extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ProductCard extends StatelessWidget {
-  final String imageUrl;
-  final String category;
-  final String title;
-  final double price;
-  final double rating;
-
-  const ProductCard({
-    super.key,
-    required this.imageUrl,
-    required this.category,
-    required this.title,
-    required this.price,
-    required this.rating,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: GestureDetector(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProductDetailsScreen(),));
-              },
-              child: SizedBox(
-                width: double.infinity,
-                height: 150,
-                child: Image.asset(imageUrl, height: 120, width: 120,),
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            category,
-            style: TextStyle(color: Colors.grey[600], fontSize: 14),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              _buildStarRating(rating),
-              const SizedBox(width: 6),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "\$${price.toStringAsFixed(2)}",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                width: 36,
-                height: 36,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.add, color: Colors.white),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStarRating(double rating) {
-    int fullStars = rating.floor();
-    bool hasHalfStar = (rating - fullStars) >= 0.5;
-    return Row(
-      children: List.generate(5, (index) {
-        if (index < fullStars) {
-          return const Icon(Icons.star, color: Colors.black, size: 16);
-        } else if (index == fullStars && hasHalfStar) {
-          return const Icon(Icons.star_half, color: Colors.black, size: 16);
-        } else {
-          return const Icon(Icons.star_border, color: Colors.black, size: 16);
-        }
-      }),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../router_component.dart';
+
 class DiscoverScreen extends StatelessWidget{
   const DiscoverScreen({super.key});
 
@@ -30,33 +32,34 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return const SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const CircleAvatar(backgroundColor: Colors.orange, radius: 22, backgroundImage: NetworkImage("https://randomuser.me/api/portraits/men/32.jpg")),
-            Stack(
-              children: [
-                _buildCircleButton(
-                  icon: Icons.shopping_bag_outlined,
-                  onPressed: () {},
-                ),
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            CircleAvatar(backgroundColor: Colors.orange, radius: 22, backgroundImage: NetworkImage("https://randomuser.me/api/portraits/men/32.jpg")),
+            // Stack(
+            //   children: [
+            //     _buildCircleButton(
+            //       icon: Icons.shopping_bag_outlined,
+            //       onPressed: () {},
+            //     ),
+            //     Positioned(
+            //       right: 8,
+            //       top: 8,
+            //       child: Container(
+            //         width: 8,
+            //         height: 8,
+            //         decoration: const BoxDecoration(
+            //           color: Colors.red,
+            //           shape: BoxShape.circle,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            RouterComponent(text: 'FAQ Bot', url: "ttp://192.168.119.57:8501/",),
           ],
         ),
       ),
